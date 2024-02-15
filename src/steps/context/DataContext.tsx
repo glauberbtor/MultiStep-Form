@@ -43,10 +43,17 @@ interface enderecoData {
   numero: string
 }
 
+interface TelefoneData {
+  tipo: string
+  ddd: string
+  numero: string
+}
+
 interface FormData {
   acesso: AcessoData
   dadosPessoais: PersonData
   endereco: enderecoData
+  telefone: TelefoneData[]
 }
 
 interface FormAction {
@@ -107,6 +114,7 @@ const initialState: FormData = {
     tipoEndereco: '',
     numero: '',
   },
+  telefone: [],
 }
 
 const formReducer = (state: FormData, action: FormAction): FormData => {
@@ -119,7 +127,11 @@ const formReducer = (state: FormData, action: FormAction): FormData => {
           [action.payload.field]: action.payload.value,
         },
       }
-    // Puedes agregar más casos según sea necesario
+    case 'UPDATE_TELEFONE': // Adicione um novo case para atualizar apenas o campo telefone
+      return {
+        ...state,
+        telefone: action.payload.value,
+      }
     default:
       return state
   }
@@ -132,11 +144,18 @@ interface FormProviderProps {
 const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
   const [formData, dispatch] = useReducer(formReducer, initialState)
 
-  const updateField = (step: keyof FormData, field: string, value: string) => {
-    dispatch({
-      type: 'UPDATE_FIELD',
-      payload: { step, field, value },
-    })
+  const updateField = (step: keyof FormData, field: string, value: any) => {
+    if (step === 'telefone') {
+      dispatch({
+        type: 'UPDATE_TELEFONE',
+        payload: { step, field, value },
+      })
+    } else {
+      dispatch({
+        type: 'UPDATE_FIELD',
+        payload: { step, field, value },
+      })
+    }
   }
 
   const submitForm = () => {
