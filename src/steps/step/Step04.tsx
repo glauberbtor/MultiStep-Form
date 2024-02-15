@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useToast } from '@/components/ui/use-toast'
 import { Contact2, Plus, Trash } from 'lucide-react'
 import { useState } from 'react'
 import HeaderStep from '../components/Header'
@@ -24,6 +25,7 @@ interface Telefone {
 }
 
 function Step04() {
+  const { toast } = useToast()
   const { formData, updateField } = useFormContext()
   const [novoTelefone, setNovoTelefone] = useState<Telefone>({
     tipo: '',
@@ -32,6 +34,19 @@ function Step04() {
   })
 
   const handleAddTelefone = () => {
+    if (
+      novoTelefone.tipo.trim() === '' ||
+      novoTelefone.ddd.trim() === '' ||
+      novoTelefone.numero.trim() === ''
+    ) {
+      toast({
+        variant: 'destructive',
+        title: 'Preencha todos os campos!',
+        description: 'todos os campos devem estar devidamente preenchidos.',
+      })
+      return
+    }
+
     const telefones = Array.isArray(formData.telefone) ? formData.telefone : []
     const novoTelefoneObj = { ...novoTelefone }
     updateField('telefone', 'telefone', [...telefones, novoTelefoneObj])

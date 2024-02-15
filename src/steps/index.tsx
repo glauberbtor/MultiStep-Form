@@ -1,6 +1,7 @@
 'use client'
 
 import { Card } from '@/components/ui/card'
+import { Toaster } from '@/components/ui/toaster'
 import { Steps } from 'antd'
 import { useState } from 'react'
 import StepNav from './components/StepNav'
@@ -61,6 +62,7 @@ export default function CVStep() {
 
         <StepNav currentStep={currentStep} setCurrentStep={setCurrentStep} />
       </FormProvider>
+      <Toaster />
     </div>
   )
 }
