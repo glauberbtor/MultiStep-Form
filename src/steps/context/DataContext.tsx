@@ -49,11 +49,17 @@ interface TelefoneData {
   numero: string
 }
 
+interface AreaInteresse {
+  tipoDeVaga: string
+  AreaInteresse: string
+}
+
 interface FormData {
   acesso: AcessoData
   dadosPessoais: PersonData
   endereco: enderecoData
   telefone: TelefoneData[]
+  AreaInteresse: AreaInteresse[]
 }
 
 interface FormAction {
@@ -115,6 +121,7 @@ const initialState: FormData = {
     numero: '',
   },
   telefone: [],
+  AreaInteresse: [],
 }
 
 const formReducer = (state: FormData, action: FormAction): FormData => {
@@ -127,7 +134,7 @@ const formReducer = (state: FormData, action: FormAction): FormData => {
           [action.payload.field]: action.payload.value,
         },
       }
-    case 'UPDATE_TELEFONE': // Adicione um novo case para atualizar apenas o campo telefone
+    case 'UPDATE_TELEFONE':
       return {
         ...state,
         telefone: action.payload.value,

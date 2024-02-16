@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
 import { useFormContext } from '../context/DataContext'
 
 interface StepNavProps {
@@ -7,6 +8,7 @@ interface StepNavProps {
 }
 
 function StepNav({ currentStep, setCurrentStep }: StepNavProps) {
+  const { toast } = useToast()
   const { formData, submitForm } = useFormContext()
 
   return (
@@ -22,10 +24,17 @@ function StepNav({ currentStep, setCurrentStep }: StepNavProps) {
       )}
       {currentStep < 6 && (
         <Button
-          disabled={!formData.acesso.lidoLGPD}
           variant={'outline'}
           size={'sm'}
-          onClick={() => setCurrentStep((s) => s + 1)}
+          onClick={
+            formData.acesso.lidoLGPD
+              ? () => setCurrentStep((s) => s + 1)
+              : () =>
+                  toast({
+                    variant: 'destructive',
+                    description: 'Você deve aceitar os termos!',
+                  })
+          }
         >
           Próximo
         </Button>
